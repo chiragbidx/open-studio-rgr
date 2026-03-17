@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and, or, desc } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -7,14 +7,20 @@ import { db } from "@/lib/db/client";
 import { clients, teamMembers } from "@/lib/db/schema";
 import ClientPage from "./client";
 
+// Ensure dynamic rendering (for runtime params)
 export const dynamic = "force-dynamic";
 
+// Validate search params as object with string values
 const searchParamsSchema = z.object({
   search: z.string().optional(),
-  status: z.string().optional(), // e.g. active|inactive|archived|all
+  status: z.string().optional(),
 });
 
-export default async function ClientsPage({ searchParams }: { searchParams?: Record<string, string | string[]> }) {
+type SearchParams = { search?: string; status?: string };
+
+// Next.js server components now receive searchParams as an object, not Promise.
+// https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#searchparams-optional
+export default async function ClientsPage({ searchParams }: { searchParams?: SearchParams }) {
   const session = await getAuthSession();
   if (!session) redirect("/auth#signin");
 
@@ -26,10 +32,10 @@ export default async function ClientsPage({ searchParams }: { searchParams?: Rec
     .limit(1);
 
   if (!membership) redirect("/dashboard");
-
   const teamId = membership.teamId;
   const role = membership.role;
 
+  // Handle search/filter params
   let search = "";
   let status = "active";
   if (searchParams) {
@@ -40,18 +46,26 @@ export default async function ClientsPage({ searchParams }: { searchParams?: Rec
     }
   }
 
-  let query = db.select().from(clients).where(eq(clients.teamId, teamId));
+  // Build query
+  let whereExpr: any = eq(clients.teamId, teamId);
   if (status && ["active","inactive","archived"].includes(status)) {
-    query = query.where(eq(clients.status, status));
+    whereExpr = and(whereExpr, eq(clients.status, status));
   }
-  // Search by name or contact info (case-insensitive)
-  // (basic LIKE + ILIKE may differ per driver, simplest for demo use)
   if (search) {
-    query = query.where((row) =>
-      row.name.ilike(`%${search}%`) || row.contactInfo.ilike(`%${search}%`)
+    // Simple LIKE search across name, contactInfo
+    whereExpr = and(
+      whereExpr,
+      or(
+        clients.name.ilike ? clients.name.ilike(`%${search}%`) : eq(clients.name, search),
+        clients.contactInfo && clients.contactInfo.ilike ? clients.contactInfo.ilike(`%${search}%`) : eq(clients.contactInfo, search)
+      )
     );
   }
-  const clientList = await query.orderBy(clients.updatedAt.desc()).all();
+  const clientList = await db
+    .select()
+    .from(clients)
+    .where(whereExpr)
+    .orderBy(desc(clients.updatedAt));
 
   return (
     <ClientPage
