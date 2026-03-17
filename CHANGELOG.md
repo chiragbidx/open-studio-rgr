@@ -1,7 +1,5 @@
-# Changelog
-<!--
-  Purpose:
-  - Track project change history over time.
-  - Record date, summary, and key files touched for each change set.
-  - Keep entries append-only (do not delete past entries).
--->
+## [Released] - YYYY-MM-DD
+
+### Fixed
+- Resolved repeated git merge errors due to local changes in `drizzle/meta/_journal.json` by committing the migration journal.
+- Reminder: Always commit or stash migration journals after running migrations.
