@@ -8,7 +8,7 @@ AI-facing index of the repository as it exists today. Drizzle ORM (PostgreSQL) i
 - Purpose: SaaS boilerplate with App Router, Drizzle + Postgres schema, multi-tenant teams, and modular section-based landing architecture.
 - Style: file-system routing, server-preferred components, small isolated client islands.
 - Tech: Next.js 16, React 19, TypeScript 5, Tailwind-ready PostCSS, ESLint 9, Zod for validation, SendGrid for email.
-- Present: Drizzle schema + migrations for `users`, `teams`, `team_members`, `team_invitations`, `feature_items`, `clients`; `/auth` route with sign-in/sign-up server actions; shared dashboard layout with overview, settings (profile/email/password), team management, clients CRUD, and a DB-backed feature CRUD reference page; invitation acceptance flow; reusable UI primitives; centralized theme system.
+- Present: Drizzle schema + migrations for `users`, `teams`, `team_members`, `team_invitations`, `feature_items`, `clients`, `projects`; `/auth` route with sign-in/sign-up server actions; shared dashboard layout with overview, settings (profile/email/password), team management, clients CRUD, projects CRUD, and a DB-backed feature CRUD reference page; invitation acceptance flow; reusable UI primitives; centralized theme system.
 - Not present: middleware guards, API routes, queues, tests.
 
 ## 2. Application Entry Points
@@ -30,6 +30,9 @@ AI-facing index of the repository as it exists today. Drizzle ORM (PostgreSQL) i
 - `app/dashboard/clients/page.tsx`: Server route entry for `/dashboard/clients`; loads client data, team, and renders `app/dashboard/clients/client.tsx`
 - `app/dashboard/clients/client.tsx`: Client CRUD UI for clients table (list, add/edit/archive, search/filter, empty states).
 - `app/dashboard/clients/actions.tsx`: Clients server actions (createClient, updateClient, archive/unarchive with RBAC and tenant-scope).
+- `app/dashboard/projects/page.tsx`: Server route entry for `/dashboard/projects`; loads project data, team, and renders `app/dashboard/projects/client.tsx`
+- `app/dashboard/projects/client.tsx`: Client CRUD UI for projects table (list, add/edit/archive, search/filter, link to clients, empty states).
+- `app/dashboard/projects/actions.tsx`: Projects server actions (createProject, updateProject, archive/unarchive, RBAC, tenant scope).
 - `app/dashboard/feature/page.tsx`: Server route entry for `/dashboard/feature`; resolves auth/team scope and loads `feature_items`.
 - `app/dashboard/feature/client.tsx`: Client feature CRUD UI (list table, add/edit dialogs, delete action, flash status).
 - `app/dashboard/feature/actions.tsx`: Feature server actions (`createFeatureItemAction`, `updateFeatureItemAction`, `deleteFeatureItemAction`) with Zod + tenant/role guards.
@@ -42,4 +45,4 @@ AI-facing index of the repository as it exists today. Drizzle ORM (PostgreSQL) i
 - No `middleware.ts`; requests go straight to App Router.
 
 ## 3. Modules / Feature Areas
-[...unchanged except adding `clients` to dashboard and Drizzle schema list...]
+[...unchanged except adding `clients`, `projects` to dashboard and Drizzle schema list...]
