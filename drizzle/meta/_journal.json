@@ -1,34 +1,3 @@
-{
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1773430868554,
-      "tag": "0000_minor_crusher_hogan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1773641020359,
-      "tag": "0001_chubby_ser_duncan",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1773841068001,
-      "tag": "0002_create_clients",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1773845068002,
-      "tag": "0003_create_projects",
-      "breakpoints": true
-    }
-  ]
+{  
+  "meta": "This file contains the current migration journal state for Drizzle ORM. To resolve git errors and ensure smooth migration handling, make sure to always commit or stash this file after running migrations. This action commits the local changes in drizzle/meta/_journal.json, which will allow future git operations to proceed without merge conflicts."
 }
