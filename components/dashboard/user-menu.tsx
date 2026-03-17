@@ -65,7 +65,7 @@ export function UserMenu({
               className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
             >
               <LogOut className="size-4" />
-              Sign out
+              Sign out of StartwiseCRM
             </Button>
           </form>
         </div>
