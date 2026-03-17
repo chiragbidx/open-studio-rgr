@@ -15,6 +15,7 @@ export default function Client({ greeting, firstName }: ClientProps) {
     <DashboardContent
       greeting={greeting}
       firstName={firstName}
+      // You can pass additional props when replacing DashboardContent for CRM
     />
   );
 }
