@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { clients, teamMembers } from "@/lib/db/schema";
 import { getAuthSession } from "@/lib/auth/session";
@@ -11,8 +11,12 @@ async function requireEditableRole(userId: string, teamId: string) {
   const [membership] = await db
     .select({ role: teamMembers.role })
     .from(teamMembers)
-    .where(eq(teamMembers.userId, userId))
-    .where(eq(teamMembers.teamId, teamId))
+    .where(
+      and(
+        eq(teamMembers.userId, userId),
+        eq(teamMembers.teamId, teamId)
+      )
+    )
     .limit(1);
   if (!membership || !["admin", "owner"].includes(membership.role)) {
     throw new Error("You do not have permission to modify clients.");
