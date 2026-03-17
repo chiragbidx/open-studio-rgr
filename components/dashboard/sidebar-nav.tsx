@@ -13,7 +13,6 @@ import {
   FileText,
   ClipboardList,
   LineChart,
-  Hammer,
 } from "lucide-react";
 import {
   Collapsible,
