@@ -22,6 +22,13 @@
       "when": 1773841068001,
       "tag": "0002_create_clients",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1773845068002,
+      "tag": "0003_create_projects",
+      "breakpoints": true
     }
   ]
 }
