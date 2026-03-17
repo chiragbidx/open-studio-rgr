@@ -1,7 +1,7 @@
 import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-// ...users, teams, teamMembers, teamInvitations, featureItems unchanged...
+// ...existing tables...
 
 export const users = pgTable("users", {
   id: text("id")
@@ -98,7 +98,6 @@ export const featureItems = pgTable("feature_items", {
     .defaultNow(),
 });
 
-// --- StartwiseCRM Clients Table ---
 export const clients = pgTable("clients", {
   id: text("id").notNull().default(sql`gen_random_uuid()`).primaryKey(),
   teamId: text("team_id").notNull().references(() => teams.id, { onDelete: "cascade" }),
@@ -107,6 +106,21 @@ export const clients = pgTable("clients", {
   billingInfo: text("billing_info").notNull().default(""),
   status: text("status").notNull().default("active"), // active, inactive, archived
   notes: text("notes").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// --- StartwiseCRM Projects Table ---
+export const projects = pgTable("projects", {
+  id: text("id").notNull().default(sql`gen_random_uuid()`).primaryKey(),
+  teamId: text("team_id").notNull().references(() => teams.id, { onDelete: "cascade" }),
+  clientId: text("client_id").notNull().references(() => clients.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  status: text("status").notNull().default("planned"), // planned, active, completed, on_hold, archived
+  budget: text("budget").notNull().default(""), // can be formatted price string, or numeric with formatting
+  timeline: text("timeline").notNull().default(""), // free text for MVP (start/end or due date)
+  assigned: text("assigned").notNull().default(""), // owner/team (userId list or string for MVP)
+  description: text("description").notNull().default(""),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
