@@ -15,20 +15,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+// Branding updates for StartwiseCRM
 import {
   type AuthActionState,
   signInWithPassword,
   signUpWithPassword,
 } from "./actions";
-
-// Purpose: Client UI for /auth.
-// Use this file for auth mode toggles, form interactivity, and browser-only logic.
-//
-// Replication pattern for new interactive pages:
-// - Keep server mutations in `actions.ts`.
-// - Bind actions here with `useActionState`.
-// - Use local state only for presentation/interaction (tabs, steps, toggles).
-// - Keep forms simple: collect inputs and submit to a server action.
 
 type AuthMode = "signin" | "signup";
 
@@ -85,15 +77,15 @@ export default function Client({ redirectTo }: ClientProps) {
     if (mode === "signup") {
       return {
         id: "signup",
-        title: "Create account",
-        description: "Start your free account in less than a minute.",
+        title: "Create your StartwiseCRM account",
+        description: "StartwiseCRM is for your startup’s internal team. Secure, invite-only onboarding.",
       };
     }
 
     return {
       id: "signin",
-      title: "Sign in",
-      description: "Use your email and password to continue.",
+      title: "Sign in to StartwiseCRM",
+      description: "Log in to your startup workspace. Only authorized team members may access the CRM.",
     };
   }, [mode]);
 
@@ -105,21 +97,20 @@ export default function Client({ redirectTo }: ClientProps) {
           <div className="relative z-10 flex h-full flex-col justify-between">
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/80">
-                Panda Access
+                StartwiseCRM Access
               </p>
               <h1 className="max-w-sm text-4xl font-semibold leading-tight tracking-tight">
-                Launch faster with one workspace for your team.
+                Empower your internal startup team with one secure CRM.
               </h1>
               <p className="max-w-md text-sm text-muted-foreground">
-                Secure auth, polished interface, and a clean onboarding flow built
-                for production teams.
+                Secure authentication, role-based access, and a polished onboarding flow designed for startups.
               </p>
             </div>
 
             <div className="relative overflow-hidden rounded-2xl border border-secondary/70 bg-background/80 p-3 shadow-lg">
               <Image
-                src="/demo-img.jpg"
-                alt="Panda product preview"
+                src="/hero-image-light.jpeg"
+                alt="StartwiseCRM dashboard preview"
                 className="h-full w-full rounded-xl object-cover"
                 width={1200}
                 height={900}
